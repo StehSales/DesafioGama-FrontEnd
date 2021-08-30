@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+  <link rel="stylesheet" href="style.css">
+
+
+  
+  <title>JobsNet - Formulário</title>
+
+  <script>
+    $(function () {
+      $("#frmCpf").inputmask({
+        mask: "999.999.999-99"
+      });
+    });
+
+
+    function limpa_formulário_cep() {
+      document.getElementById('rua').value = ("");
+      document.getElementById('bairro').value = ("");
+      document.getElementById('cidade').value = ("");
+
+    }
+
+    function meu_callback(conteudo) {
+      if (!("erro" in conteudo)) {
+        document.getElementById('rua').value = (conteudo.logradouro);
+        document.getElementById('bairro').value = (conteudo.bairro);
+        document.getElementById('cidade').value = (conteudo.localidade);
+
+      } else {
+        limpa_formulário_cep();
+        alert("CEP não encontrado.");
+      }
+    }
+
+    function pesquisacep(valor) {
+      var cep = valor.replace(/\D/g, '');
+      if (cep != "") {
+        var validacep = /^[0-9]{8}$/;
+        if (validacep.test(cep)) {
+          document.getElementById('rua').value = "...";
+          document.getElementById('bairro').value = "...";
+          document.getElementById('cidade').value = "...";
+
+          var script = document.createElement('script');
+
+          script.src = 'https://viacep.com.br/ws/' + cep + '/json/?callback=meu_callback';
+
+          document.body.appendChild(script);
+
+        } else {
+          limpa_formulário_cep();
+          alert("Formato de CEP inválido.");
+        }
+      } else {
+
+        limpa_formulário_cep();
+      }
+    };
+  </script>
+
+
+
+</head>
+
+<body>
+  <div class="box">
+    <form name="formulario" method= "POST" id="formulario" onchange="Formulario()">
+      <fieldset>
+        <legend align="center"> <b>Dados Pessoais</b></legend>
+        <br>
+
+        <div class="inputBox">
+          <input type="text" name="nome" id="nome" class="inputUser" onchange="Formulario()" required>
+          <label for="nome" class="labelInput">Nome Completo</label>
+        </div>
+
+        <br><br>
+
+        <div class="inputBox">
+
+          <input type="text" name="profissao" id="profissao" class="inputUser" onchange="Formulario()" required>
+          <label for="nome" class="labelInput">Cargo Pretendindo</label>
+        </div>
+
+
+        <br>
+
+
+        <label for="data_nascimento">Data de Nascimento</label>
+        <input type="date" name="birth" id="birth" onchange="Formulario()" required>
+
+        <br><br>
+
+        <div class="section">
+          <label for="civil">Estado Cívil </label>
+          <select name="civil" id="civil" onchange="Formulario()" required>
+            <option value="Solteiro">Solteiro(a)</option>
+            <option value="Casado">Casado(a) </option>
+            <option value="Separado">Separado(a)</option>
+            <option value="Divorciado">Divorciado(a)</option>
+            <option value="Viúvo">Viúvo(a)</option>
+          </select>
+
+          <br><br>
+          <label for="nome">Sexo</label>
+          <select name="sexo" id="sexo" onchange="Formulario()" required>
+            <br>
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino </option>
+            <option value="Outro">Outro</option>
+          </select>
+
+          <br><br>
+        </div>
+
+        <form name="formulario" id="formulario" onchange="Formulario()">
+
+          <label for="cep">CEP
+            <input name="cep" type="text" id="cep" onchange="Formulario()" value="" size="10" maxlength="9"
+              onblur="pesquisacep(this.value);" required /></label><br /><br>
+
+
+          <label for="nome">Endereço
+            <input name="rua" type="text" id="rua" onchange="Formulario()" size="60" required /></label><br /><br>
+
+
+          <label for="nome">Bairro
+            <input name="bairro" type="text" id="bairro" onchange="Formulario()" size="40" required /></label><br /><br>
+
+          <label for="nome">Cidade
+            <input name="cidade" type="text" id="cidade" onchange="Formulario()" size="40"
+              required /></label><br /><br><br>
+        </form>
+
+
+        <div class="inputBox">
+          <input type="tel" name="tel1" id="tel1" onchange="Formulario()" class="inputUser" required>
+          <label for="telefone" class="labelInput">Telefone Fixo 1</label>
+        </div>
+        <br><br>
+
+        <div class="inputBox">
+          <input type="tel" name="tel2" id="tel2" onchange="Formulario()" class="inputUser" required>
+          <label for="telefone" class="labelInput">Telefone Fixo 2</label>
+        </div>
+        <br><br>
+
+        <div class="inputBox">
+          <input type="tel" name="cel" id="cel" onchange="Formulario()" class="inputUser" required>
+          <label for="celular" class="labelInput">Celular</label>
+        </div>
+        <br><br>
+
+        <div class="inputBox">
+          <input type="text" name="contato" id="contato" onchange="Formulario()" class="inputUser" required>
+          <label for="text" class="labelInput">Contato</label>
+        </div>
+        <br><br>
+
+        <div class="inputBox">
+          <input type="text" name="email" id="email" onchange="Formulario()" class="inputUser" required>
+          <label for="email" class="labelInput">E-mail</label>
+        </div>
+        <br>
+
+        <fieldset>
+          <legend align="center"> <b>Dados Pessoais</b></legend>
+          <br>
+          <div class="inputBox">
+            <label for="identidade">Identidade</label>
+            <input type="text" name="rg" id="rg" onchange="Formulario()" class="rg" required>
+          </div>
+          <br>
+
+          <div class="inputBox">
+            <label for="cpf">CPF</label>
+            <input type="text" id="frmCpf" onchange="Formulario()" name="frmCpf" class="cpf" required />
+
+          </div>
+          <br>
+
+          <select name="veiculo" id="veiculo" onchange="Formulario()" required>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não </option>
+          </select>
+          <label for="nome">Possui Veículo</label><br>
+          <br>
+
+          <select name="habilitacao" id="habilitacao" onchange="Formulario()" required>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+          </select>
+          <label for="nome">Habilitação</label>
+        </fieldset>
+        <input type="submit" name="submit" id="submit" onclick="check_form(); return false;" value="ENVIAR">
+      </fieldset>
+    </form>
+  </div>
+
+<script src="script.js"></script>
+
+</body>
+
+
+</html>
